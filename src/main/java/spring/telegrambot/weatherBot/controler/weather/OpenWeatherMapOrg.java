@@ -21,22 +21,7 @@ public class OpenWeatherMapOrg {
         this.keyOpenWeather = keyOpenWeather;
     }
 
-//    private URL getUrl(Coordinates coordinates) {
-//        URL url = null;
-//        try{
-//            url = new URL("https://api.openweathermap.org/data/2.5/onecall?lat=" +
-//                    coordinates.latitude() + "&lon=" + coordinates.longitude() +
-//                    "&exclude=minutely,hourly,daily&units=metric&appid=" +
-//                    keyOpenWeather + "&lang=ru");
-//        }
-//        catch (MalformedURLException e){
-//            System.out.println("ERROR: Неверно сформированная ссылка URL! " +
-//                    e.getMessage());
-//        }
-//        return url;
-//    }
-
-    private URL getUrl2(Coordinates coordinates) {
+    private URL getUrl(Coordinates coordinates) {
         URL url = null;
         try{
             url = new URL("https://api.openweathermap.org/data/2.5/weather?lat=" +
@@ -54,12 +39,7 @@ public class OpenWeatherMapOrg {
 
     public String currentWeather(Coordinates coordinates){
         StringBuilder content = new StringBuilder();
-        URL url = getUrl2(coordinates);
-        if(url == null){
-            return "Запрос не доступен!";
-        }
-        System.out.println("URL: " + url);
-
+        URL url = getUrl(coordinates);
         try {
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("GET");
@@ -75,7 +55,6 @@ public class OpenWeatherMapOrg {
         } catch (IOException e) {
             System.out.println("Сбой на этапе получения JSON от openweathermap.org: " +
                     e.getMessage());
-
         }
         return content.toString();
     }

@@ -1,14 +1,12 @@
-package spring.telegrambot.weatherBot.command.button;
+package spring.telegrambot.weatherBot.command;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import spring.telegrambot.weatherBot.command.Command;
 import spring.telegrambot.weatherBot.data.district.DistrictEnum;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DistrictsButton implements Command {
@@ -78,5 +76,4 @@ public class DistrictsButton implements Command {
     public String run() {
         return null;
     }
-
 }

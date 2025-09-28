@@ -2,8 +2,6 @@ package spring.telegrambot.weatherBot.command;
 
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import spring.telegrambot.weatherBot.command.button.DistrictsButton;
-import spring.telegrambot.weatherBot.command.district.DistrictWeatherInfo;
 import spring.telegrambot.weatherBot.controler.weather.OpenWeatherMapOrg;
 import spring.telegrambot.weatherBot.data.district.DistrictEnum;
 

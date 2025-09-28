@@ -2,8 +2,6 @@ package spring.telegrambot.weatherBot.command;
 
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import spring.telegrambot.weatherBot.command.button.DistrictsButton;
-import spring.telegrambot.weatherBot.command.district.DistrictWeatherInfo;
 import spring.telegrambot.weatherBot.controler.weather.OpenWeatherMapOrg;
 import spring.telegrambot.weatherBot.data.district.DistrictEnum;
 
@@ -49,14 +47,6 @@ public class Commands {
 
     public Command getCommand(String command){
         return commands.get(command.toLowerCase());
-    }
-
-    public String startCommand3(String command){
-        Command commandB = getCommand(command);
-        if (commandB == null){
-            return "Команда "+ command + " не найдена";
-        }
-        return commandB.run();
     }
 
     public SendMessage startCommand(String command, String chatID){

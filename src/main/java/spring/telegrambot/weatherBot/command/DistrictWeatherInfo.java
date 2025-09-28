@@ -1,9 +1,8 @@
-package spring.telegrambot.weatherBot.command.district;
+package spring.telegrambot.weatherBot.command;
 
 import com.google.gson.Gson;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import spring.telegrambot.weatherBot.command.Command;
 import spring.telegrambot.weatherBot.data.district.DistrictEnum;
 import spring.telegrambot.weatherBot.controler.weather.OpenWeatherMapOrg;
 import spring.telegrambot.weatherBot.data.weather.Weather_Root;

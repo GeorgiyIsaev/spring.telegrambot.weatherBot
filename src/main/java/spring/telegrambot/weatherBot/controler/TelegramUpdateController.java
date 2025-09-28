@@ -1,7 +1,6 @@
 package spring.telegrambot.weatherBot.controler;
 
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -17,7 +16,6 @@ import spring.telegrambot.weatherBot.command.Commands;
 @RestController
 @RequestMapping("/v1/api/telegram")
 public class TelegramUpdateController {
-
 
     private final String urlServer;
     private final TelegramFeignClient telegramFeignClient;
@@ -58,10 +56,6 @@ public class TelegramUpdateController {
             String chatId = update.getMessage().getChatId().toString();
             String command = update.getMessage().getText();
             SendMessage sendMessage = commands.startCommand(command, chatId);
-
-            //String text = commands.startCommand(update.getMessage().getText());
-
-           // SendMessage sendMessage = SendMessage.builder().chatId(chatId).text(text).build();
             String request = telegramFeignClient.sendMessage(sendMessage);
             System.out.println("request: " + request);
         }
@@ -70,7 +64,6 @@ public class TelegramUpdateController {
             String dataButton = update.getCallbackQuery().getData();
             System.out.println("КНОПКА: " + dataButton);
             SendMessage sendMessage = buttons.startCommand(dataButton,chatId);
-
             String request = telegramFeignClient.sendMessage(sendMessage);
             System.out.println("request: " + request);
         }
