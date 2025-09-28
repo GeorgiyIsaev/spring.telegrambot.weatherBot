@@ -52,14 +52,22 @@ public class TelegramUpdateController {
         if(update.hasMessage()){
             System.out.println("TEXT");
             String chatId = update.getMessage().getChatId().toString();
-            String text = commands.startCommand(update.getMessage().getText());
+            String command = update.getMessage().getText();
+            SendMessage sendMessage = commands.startCommand(command, chatId);
 
-            SendMessage sendMessage = SendMessage.builder().chatId(chatId).text(text).build();
+            //String text = commands.startCommand(update.getMessage().getText());
+
+           // SendMessage sendMessage = SendMessage.builder().chatId(chatId).text(text).build();
             String request = telegramFeignClient.sendMessage(sendMessage);
             System.out.println("request: " + request);
         }
+        else if(update.hasCallbackQuery()){
+            String chatId = update.getCallbackQuery().getMessage().getChatId().toString();
+            String dataButton = update.getCallbackQuery().getData();
+            System.out.println("КНОПКА: " + dataButton);
+        }
         else{
-            System.out.println("НЕ TEXT");
+            System.out.println("ЧТО ТО ИНОЕ!");
         }
     }
 }

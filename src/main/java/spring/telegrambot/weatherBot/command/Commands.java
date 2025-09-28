@@ -2,11 +2,11 @@ package spring.telegrambot.weatherBot.command;
 
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import spring.telegrambot.weatherBot.command.district.Admiralteiskii;
+import spring.telegrambot.weatherBot.command.button.DistrictsButton;
+import spring.telegrambot.weatherBot.command.district.DistrictWeatherInfo;
 import spring.telegrambot.weatherBot.controler.weather.OpenWeatherMapOrg;
 import spring.telegrambot.weatherBot.data.district.DistrictEnum;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -21,27 +21,50 @@ public class Commands {
     }
 
     private void generateCommand(OpenWeatherMapOrg openWeatherMapOrg) {
-        addCommand(DistrictEnum.ADMIRALTEISKII, openWeatherMapOrg);
-        addCommand(DistrictEnum.FRUNZENSKII, openWeatherMapOrg);
+        for (DistrictEnum district : DistrictEnum.values()) {
+            addCommand(district, openWeatherMapOrg);
+        }
+        addButtonCreateCommand();
     }
 
-    public void addCommand(DistrictEnum districtEnum, OpenWeatherMapOrg openWeatherMapOrg){
-        Admiralteiskii admiralteiskii = new Admiralteiskii(DistrictEnum.ADMIRALTEISKII, openWeatherMapOrg);
+    public void addCommand(DistrictEnum districtEnum, OpenWeatherMapOrg openWeatherMapOrg) {
+        DistrictWeatherInfo districtWeatherInfo = new DistrictWeatherInfo(districtEnum, openWeatherMapOrg);
 
-        commands.put(districtEnum.getId() + "", admiralteiskii);
-        commands.put(districtEnum.getName(), admiralteiskii);
-        commands.put(districtEnum.getNamePrepositional(), admiralteiskii);
+        commands.put(districtEnum.getId() + "", districtWeatherInfo);
+        commands.put(districtEnum.getName(), districtWeatherInfo);
+        commands.put(districtEnum.getNamePrepositional(), districtWeatherInfo);
+        if (districtEnum.getName().length() > 4) {
+            String abbreviation = districtEnum.getName().substring(0, 3);
+            commands.put(abbreviation, districtWeatherInfo);
+        }
+    }
+
+    public void addButtonCreateCommand(){
+        DistrictsButton districtsButton = new DistrictsButton();
+        commands.put("районы", districtsButton);
+        commands.put("район",districtsButton);
+        commands.put("список",districtsButton);
+        commands.put("/districts",districtsButton);
     }
 
     public Command getCommand(String command){
         return commands.get(command.toLowerCase());
     }
 
-    public String startCommand(String command){
+    public String startCommand3(String command){
         Command commandB = getCommand(command);
         if (commandB == null){
             return "Команда "+ command + " не найдена";
         }
         return commandB.run();
+    }
+
+    public SendMessage startCommand(String command, String chatID){
+        Command commandB = getCommand(command);
+        if (commandB == null){
+            String text = "Команда "+ command + " не найдена";
+            return SendMessage.builder().chatId(chatID).text(text).build();
+        }
+        return commandB.runChat(chatID);
     }
 }
