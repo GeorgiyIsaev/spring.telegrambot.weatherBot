@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import spring.telegrambot.weatherBot.client.SetWebhookRequest;
 import spring.telegrambot.weatherBot.client.TelegramFeignClient;
-
+import spring.telegrambot.weatherBot.command.Commands;
 
 
 @RestController
@@ -20,13 +20,17 @@ public class TelegramUpdateController {
 
     private final String urlServer;
     private final TelegramFeignClient telegramFeignClient;
+    private final Commands commands;
 
     public TelegramUpdateController(
-            TelegramFeignClient telegramFeignClient
-            ,@Value("${telegram.urlHostTunnel}") String urlServer){
+            TelegramFeignClient telegramFeignClient,
+            Commands commands,
+            @Value("${telegram.urlHostTunnel}") String urlServer){
         this.telegramFeignClient = telegramFeignClient;
         this.urlServer = urlServer;
+        this.commands = commands;
     }
+
 
     @PostConstruct
     public void init(){
@@ -46,11 +50,16 @@ public class TelegramUpdateController {
     public void postMethod(@RequestBody Update update) {
         System.out.println("Update print " + update);
         if(update.hasMessage()){
+            System.out.println("TEXT");
             String chatId = update.getMessage().getChatId().toString();
-            String text = update.getMessage().getText();
+            String text = commands.startCommand(update.getMessage().getText());
+
             SendMessage sendMessage = SendMessage.builder().chatId(chatId).text(text).build();
             String request = telegramFeignClient.sendMessage(sendMessage);
             System.out.println("request: " + request);
+        }
+        else{
+            System.out.println("НЕ TEXT");
         }
     }
 }
