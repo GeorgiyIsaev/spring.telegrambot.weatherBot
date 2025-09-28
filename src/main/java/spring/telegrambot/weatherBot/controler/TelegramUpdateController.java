@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import spring.telegrambot.weatherBot.client.SetWebhookRequest;
 import spring.telegrambot.weatherBot.client.TelegramFeignClient;
+import spring.telegrambot.weatherBot.command.Buttons;
 import spring.telegrambot.weatherBot.command.Commands;
 
 
@@ -21,14 +22,17 @@ public class TelegramUpdateController {
     private final String urlServer;
     private final TelegramFeignClient telegramFeignClient;
     private final Commands commands;
+    private final Buttons buttons;
 
     public TelegramUpdateController(
             TelegramFeignClient telegramFeignClient,
             Commands commands,
+            Buttons buttons,
             @Value("${telegram.urlHostTunnel}") String urlServer){
         this.telegramFeignClient = telegramFeignClient;
         this.urlServer = urlServer;
         this.commands = commands;
+        this.buttons = buttons;
     }
 
 
@@ -65,6 +69,10 @@ public class TelegramUpdateController {
             String chatId = update.getCallbackQuery().getMessage().getChatId().toString();
             String dataButton = update.getCallbackQuery().getData();
             System.out.println("КНОПКА: " + dataButton);
+            SendMessage sendMessage = buttons.startCommand(dataButton,chatId);
+
+            String request = telegramFeignClient.sendMessage(sendMessage);
+            System.out.println("request: " + request);
         }
         else{
             System.out.println("ЧТО ТО ИНОЕ!");
