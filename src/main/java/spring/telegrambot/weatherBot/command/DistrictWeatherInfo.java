@@ -27,7 +27,7 @@ public class DistrictWeatherInfo implements Command {
             text = "Погода " + districtEnum.getNamePrepositional() + " районе:\n" + weather;
         }
         catch (Exception ex){
-                System.out.println("Exception in DistrictWeatherInfo.class " + ex.getMessage());
+            System.out.println("Exception in DistrictWeatherInfo.class " + ex.getMessage());
         }
 
         return SendMessage.builder().chatId(chatId).text(text).build();

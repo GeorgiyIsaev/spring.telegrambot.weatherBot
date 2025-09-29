@@ -11,6 +11,8 @@ import spring.telegrambot.weatherBot.client.SetWebhookRequest;
 import spring.telegrambot.weatherBot.client.TelegramFeignClient;
 import spring.telegrambot.weatherBot.command.Buttons;
 import spring.telegrambot.weatherBot.command.Commands;
+import spring.telegrambot.weatherBot.data.request.Request;
+import spring.telegrambot.weatherBot.logger.Logger;
 
 
 @RestController
@@ -21,16 +23,19 @@ public class TelegramUpdateController {
     private final TelegramFeignClient telegramFeignClient;
     private final Commands commands;
     private final Buttons buttons;
+    private final Logger logger;
 
     public TelegramUpdateController(
             TelegramFeignClient telegramFeignClient,
             Commands commands,
             Buttons buttons,
+            Logger logger,
             @Value("${telegram.urlHostTunnel}") String urlServer){
         this.telegramFeignClient = telegramFeignClient;
         this.urlServer = urlServer;
         this.commands = commands;
         this.buttons = buttons;
+        this.logger = logger;
     }
 
 
@@ -39,36 +44,34 @@ public class TelegramUpdateController {
         SetWebhookRequest request = new SetWebhookRequest(urlServer);
         //SetWebhookRequest request = new SetWebhookRequest("");
         String response = telegramFeignClient.setWebhook(request);
-        System.out.println("response: " + response);
+        logger.logResponse(response);
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handle(HttpMessageNotReadableException e) {
-        System.out.println("{400 Bad Request from Telegram " + e.getMessage() + "}");
+        logger.logException("400 Bad Request from Telegram : " , e);
+
     }
 
     @PostMapping("/")
     public void postMethod(@RequestBody Update update) {
-        System.out.println("Update print " + update);
         if(update.hasMessage()){
-            System.out.println("TEXT");
+            logger.logMessage(update);
             String chatId = update.getMessage().getChatId().toString();
             String command = update.getMessage().getText();
             SendMessage sendMessage = commands.startCommand(command, chatId);
-            String request = telegramFeignClient.sendMessage(sendMessage);
-            System.out.println("request: " + request);
+            Request request = telegramFeignClient.sendMessage(sendMessage);
+            logger.logRequest(request);
         }
         else if(update.hasCallbackQuery()){
+            logger.logCallbackQuery(update);
             String chatId = update.getCallbackQuery().getMessage().getChatId().toString();
             String dataButton = update.getCallbackQuery().getData();
             System.out.println("КНОПКА: " + dataButton);
             SendMessage sendMessage = buttons.startCommand(dataButton,chatId);
-            String request = telegramFeignClient.sendMessage(sendMessage);
-            System.out.println("request: " + request);
-        }
-        else{
-            System.out.println("ЧТО ТО ИНОЕ!");
+            Request request = telegramFeignClient.sendMessage(sendMessage);
+            logger.logRequest(request);
         }
     }
 }
