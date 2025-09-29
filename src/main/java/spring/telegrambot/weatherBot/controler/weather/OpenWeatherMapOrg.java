@@ -1,8 +1,11 @@
 package spring.telegrambot.weatherBot.controler.weather;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import spring.telegrambot.weatherBot.data.district.Coordinates;
+import spring.telegrambot.weatherBot.data.weather.Weather_Root;
+import spring.telegrambot.weatherBot.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,10 +18,13 @@ import java.net.URL;
 public class OpenWeatherMapOrg {
 
     private final String keyOpenWeather; // Ключ доступа к сайту погоды
+    private final Logger logger;
 
     public OpenWeatherMapOrg(
+            Logger logger,
             @Value("${telegram.weather_token}")String keyOpenWeather) {
         this.keyOpenWeather = keyOpenWeather;
+        this.logger = logger;
     }
 
     private URL getUrl(Coordinates coordinates) {
@@ -30,12 +36,11 @@ public class OpenWeatherMapOrg {
                     keyOpenWeather + "&lang=ru");
         }
         catch (MalformedURLException e){
-            System.out.println("ERROR: Неверно сформированная ссылка URL! " +
-                    e.getMessage());
+            logger.logException("URL openweathermap.org not formed: ", e);
         }
         return url;
     }
-    public String currentWeather(Coordinates coordinates){
+    private String currentWeather(Coordinates coordinates){
         StringBuilder content = new StringBuilder();
         URL url = getUrl(coordinates);
         try {
@@ -51,9 +56,22 @@ public class OpenWeatherMapOrg {
             connection.disconnect();
 
         } catch (IOException e) {
-            System.out.println("Exception connection to openweathermap.org: " +
-                    e.getMessage());
+            logger.logException("Not connection to openweathermap.org:", e);
         }
         return content.toString();
+    }
+
+    public String infoCurrentWeather(Coordinates coordinates){
+        String weatherJson = this.currentWeather(coordinates);
+        String text = "JSON conversion failed: ";
+        try{
+            Gson gsonHttp = new Gson();
+            Weather_Root weather = gsonHttp.fromJson(weatherJson, Weather_Root.class);
+            text = weather.toString();
+        }
+        catch (Exception e){
+            logger.logException("JSON conversion failed: ", e);
+        }
+        return text;
     }
 }

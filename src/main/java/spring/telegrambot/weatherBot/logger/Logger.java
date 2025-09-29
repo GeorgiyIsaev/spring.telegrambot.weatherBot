@@ -7,13 +7,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public interface Logger  {
-    public String logMessage(Update update);
+     void logMessage(Update update);
 
-    public String logCallbackQuery(Update update);
+     void logCallbackQuery(Update update);
 
 
 
-    public String logRequest(Request request);
-    public String logException(String info, Exception e);
-    public String logResponse(String response);
+     void logRequest(Request request);
+     void logException(String info, Exception e);
+     void logResponse(String response);
 }
