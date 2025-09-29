@@ -8,6 +8,7 @@ import spring.telegrambot.weatherBot.data.request.Request;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Component
@@ -61,14 +62,26 @@ public class ToNotebookAndConsole implements Logger{
 
     private void write(String textLog){
         //Запись текста в файл
+        createDirectoriesIfNotExists(pathLog);
         try(FileWriter writer = new FileWriter(pathLog.toFile(), true))
         {
             writer.write(textLog);
             writer.write("\n");
             writer.flush(); //запись из буфера в файл
         }
-        catch(IOException ex){
-            System.out.println(ex.getMessage());
+        catch(IOException e){
+            this.logException("Невозможно осуществить сохранение лога в файл", e);
+        }
+    }
+
+    private void createDirectoriesIfNotExists(Path userFile) {
+        Path directory = userFile.getParent();
+        if(directory != null && !Files.isDirectory(directory)){
+            try {
+                Files.createDirectories(directory);
+            } catch (IOException e) {
+                this.logException("Ошибка при создании каталога", e);
+            }
         }
     }
 }

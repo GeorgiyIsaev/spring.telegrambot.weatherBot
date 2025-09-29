@@ -12,7 +12,7 @@ public class LofFormater {
 
     private String logFormater(String type, String info){
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-        return type.toLowerCase() + ": " + timeStamp + " {" + info + "}";
+        return type.toUpperCase() + ": " + timeStamp + " {" + info + "}";
     }
 
     public String logMessage(Update update){
