@@ -22,9 +22,9 @@ public class LofFormater {
         String username = update.getMessage().getFrom().getUserName();
 
         String info= "text: " + text +
-                " chatId: " + chatId +
-                " username:" + username +
-                " updateID: " + updateID;
+                "; chatId: " + chatId +
+                "; username:" + username +
+                "; updateID: " + updateID;
         return logFormater("Message", info);
     }
 
@@ -36,9 +36,9 @@ public class LofFormater {
         String username = update.getCallbackQuery().getFrom().getUserName();
 
         String info = "button: " + dataButton +
-                " chatId: " + chatId +
-                " username:" + username +
-                " updateID: " + updateID;
+                "; chatId: " + chatId +
+                "; username:" + username +
+                "; updateID: " + updateID;
         return logFormater("CallbackQuery", info);
     }
 
