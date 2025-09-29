@@ -68,7 +68,6 @@ public class TelegramUpdateController {
             logger.logCallbackQuery(update);
             String chatId = update.getCallbackQuery().getMessage().getChatId().toString();
             String dataButton = update.getCallbackQuery().getData();
-            System.out.println("КНОПКА: " + dataButton);
             SendMessage sendMessage = buttons.startCommand(dataButton,chatId);
             Request request = telegramFeignClient.sendMessage(sendMessage);
             logger.logRequest(request);
