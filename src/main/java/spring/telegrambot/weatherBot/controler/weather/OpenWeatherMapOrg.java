@@ -35,8 +35,6 @@ public class OpenWeatherMapOrg {
         }
         return url;
     }
-
-
     public String currentWeather(Coordinates coordinates){
         StringBuilder content = new StringBuilder();
         URL url = getUrl(coordinates);
@@ -53,7 +51,7 @@ public class OpenWeatherMapOrg {
             connection.disconnect();
 
         } catch (IOException e) {
-            System.out.println("Сбой на этапе получения JSON от openweathermap.org: " +
+            System.out.println("Exception connection to openweathermap.org: " +
                     e.getMessage());
         }
         return content.toString();

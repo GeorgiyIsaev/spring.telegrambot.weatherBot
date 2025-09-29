@@ -31,7 +31,7 @@ public record Weather_Root(
                 "Тип погоды: " + weather().getFirst().main() + " (" +weather().getFirst().description() +")\n" +
                 "Облачность: " + clouds().all() + "%\n" +
                 "Дальность видимости: " + visibility() + " км\n" +
-                "Скорость ветра: " + (wind().speed()) +" метр/сек";
+                "Скорость ветра: " + decimalFormat.format(wind().speed()) +" метр/сек";
     }
 }
 

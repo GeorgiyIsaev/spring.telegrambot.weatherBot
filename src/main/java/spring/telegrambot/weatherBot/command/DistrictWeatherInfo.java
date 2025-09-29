@@ -18,24 +18,18 @@ public class DistrictWeatherInfo implements Command {
     }
 
     @Override
-    public SendMessage runSend(Update update) {
-        return null;
-    }
-
-    @Override
     public SendMessage runChat(String chatId) {
         String weatherJson = openWeatherMapOrg.currentWeather(districtEnum.getCoordinates());
-        Gson gsonHttp = new Gson();
-        Weather_Root weather = gsonHttp.fromJson(weatherJson, Weather_Root.class);
-        String text = "Погода " + districtEnum.getNamePrepositional() + " районе:\n" + weather;
-        return SendMessage.builder().chatId(chatId).text(text).build();
-    }
+        String text = "DistrictWeatherInfo";
+        try{
+            Gson gsonHttp = new Gson();
+            Weather_Root weather = gsonHttp.fromJson(weatherJson, Weather_Root.class);
+            text = "Погода " + districtEnum.getNamePrepositional() + " районе:\n" + weather;
+        }
+        catch (Exception ex){
+                System.out.println("Exception in DistrictWeatherInfo.class " + ex.getMessage());
+        }
 
-    @Override
-    public String run() {
-        String weatherJson = openWeatherMapOrg.currentWeather(districtEnum.getCoordinates());
-        Gson gsonHttp = new Gson();
-        Weather_Root weather = gsonHttp.fromJson(weatherJson, Weather_Root.class);
-        return "Погода " + districtEnum.getNamePrepositional() + " районе:\n" + weather;
+        return SendMessage.builder().chatId(chatId).text(text).build();
     }
 }

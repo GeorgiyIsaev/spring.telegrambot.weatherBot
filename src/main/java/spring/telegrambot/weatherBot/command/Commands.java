@@ -23,6 +23,8 @@ public class Commands {
             addCommand(district, openWeatherMapOrg);
         }
         addButtonCreateCommand();
+        addListDistricts();
+        addHelp();
     }
 
     public void addCommand(DistrictEnum districtEnum, OpenWeatherMapOrg openWeatherMapOrg) {
@@ -41,8 +43,21 @@ public class Commands {
         DistrictsButton districtsButton = new DistrictsButton();
         commands.put("районы", districtsButton);
         commands.put("район",districtsButton);
-        commands.put("список",districtsButton);
-        commands.put("/districts",districtsButton);
+        commands.put("кнопки",districtsButton);
+        commands.put("/districts_button",districtsButton);
+    }
+
+    public void addListDistricts(){
+        DistrictsList districtsList = new DistrictsList();
+        commands.put("список",districtsList);
+        commands.put("/districts",districtsList);
+    }
+
+    public void addHelp(){
+        Help help =new Help();
+        commands.put("/help",help);
+        commands.put("хелп",help);
+        commands.put("помощь",help);
     }
 
     public Command getCommand(String command){
