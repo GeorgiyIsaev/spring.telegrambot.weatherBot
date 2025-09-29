@@ -1,14 +1,13 @@
 package spring.telegrambot.weatherBot.logger;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import spring.telegrambot.weatherBot.data.request.Request;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 
 @Component
+@ConditionalOnProperty(value="loggerEnable" ,havingValue="onlyConsole",matchIfMissing = false)
 public class ToConsole implements Logger {
 
     private final LofFormater lofFormater;

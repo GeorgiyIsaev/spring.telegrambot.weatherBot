@@ -15,7 +15,6 @@ public class LofFormater {
         return type.toLowerCase() + ": " + timeStamp + " {" + info + "}";
     }
 
-
     public String logMessage(Update update){
         String chatId = update.getMessage().getChatId().toString();
         String text = update.getMessage().getText();
@@ -50,7 +49,6 @@ public class LofFormater {
     public String logException(String info, Exception e){
         return logFormater("Exception", info + e.getMessage());
     }
-
 
     public String logResponse(String response) {
         return logFormater("response", response);
