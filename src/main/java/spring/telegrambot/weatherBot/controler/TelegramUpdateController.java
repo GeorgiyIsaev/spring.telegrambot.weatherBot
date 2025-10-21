@@ -7,7 +7,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import spring.telegrambot.weatherBot.client.SetWebhookRequest;
+import spring.telegrambot.weatherBot.data.webhook.SetWebhookRequest;
 import spring.telegrambot.weatherBot.client.TelegramFeignClient;
 import spring.telegrambot.weatherBot.command.Buttons;
 import spring.telegrambot.weatherBot.command.Commands;

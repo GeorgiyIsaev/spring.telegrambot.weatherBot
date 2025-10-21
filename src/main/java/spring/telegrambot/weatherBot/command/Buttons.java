@@ -2,7 +2,7 @@ package spring.telegrambot.weatherBot.command;
 
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import spring.telegrambot.weatherBot.controler.weather.OpenWeatherMapOrg;
+import spring.telegrambot.weatherBot.controler.OpenWeatherMapController;
 import spring.telegrambot.weatherBot.data.district.DistrictEnum;
 
 import java.util.Map;
@@ -13,19 +13,19 @@ public class Buttons {
     private final Map<String, Command> commands;
 
     public Buttons(
-            OpenWeatherMapOrg openWeatherMapOrg) {
+            OpenWeatherMapController openWeatherMapController) {
         this.commands = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        generateCommand(openWeatherMapOrg);
+        generateCommand(openWeatherMapController);
     }
 
-    private void generateCommand(OpenWeatherMapOrg openWeatherMapOrg) {
+    private void generateCommand(OpenWeatherMapController openWeatherMapController) {
         for (DistrictEnum district : DistrictEnum.values()) {
-            addCommand(district, openWeatherMapOrg);
+            addCommand(district, openWeatherMapController);
         }
     }
 
-    public void addCommand(DistrictEnum districtEnum, OpenWeatherMapOrg openWeatherMapOrg) {
-        DistrictWeatherInfo districtWeatherInfo = new DistrictWeatherInfo(districtEnum, openWeatherMapOrg);
+    public void addCommand(DistrictEnum districtEnum, OpenWeatherMapController openWeatherMapController) {
+        DistrictWeatherInfo districtWeatherInfo = new DistrictWeatherInfo(districtEnum, openWeatherMapController);
         commands.put("button_index_" + districtEnum.getId(), districtWeatherInfo);
     }
 

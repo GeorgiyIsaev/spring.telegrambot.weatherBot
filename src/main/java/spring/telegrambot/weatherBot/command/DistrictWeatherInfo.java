@@ -1,25 +1,22 @@
 package spring.telegrambot.weatherBot.command;
 
-import com.google.gson.Gson;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import spring.telegrambot.weatherBot.data.district.DistrictEnum;
-import spring.telegrambot.weatherBot.controler.weather.OpenWeatherMapOrg;
-import spring.telegrambot.weatherBot.data.weather.Weather_Root;
+import spring.telegrambot.weatherBot.controler.OpenWeatherMapController;
 
 public class DistrictWeatherInfo implements Command {
 
     private final DistrictEnum districtEnum;
-    private final  OpenWeatherMapOrg openWeatherMapOrg;
+    private final OpenWeatherMapController openWeatherMapController;
 
-    public DistrictWeatherInfo(DistrictEnum districtEnum, OpenWeatherMapOrg openWeatherMapOrg) {
+    public DistrictWeatherInfo(DistrictEnum districtEnum, OpenWeatherMapController openWeatherMapController) {
         this.districtEnum = districtEnum;
-        this.openWeatherMapOrg = openWeatherMapOrg;
+        this.openWeatherMapController = openWeatherMapController;
     }
 
     @Override
     public SendMessage runChat(String chatId) {
-        String weather = openWeatherMapOrg.infoCurrentWeather(districtEnum.getCoordinates());
+        String weather = openWeatherMapController.infoCurrentWeather(districtEnum.getCoordinates());
         String text = "DistrictWeatherInfo";
         text = "Погода " + districtEnum.getNamePrepositional() + " районе:\n" + weather;
         return SendMessage.builder().chatId(chatId).text(text).build();
